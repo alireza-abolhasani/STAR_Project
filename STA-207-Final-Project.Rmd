@@ -1,0 +1,1194 @@
+---
+title: "Exploring the Impact of Class Size on First Grade Mathematics Achievement"
+author: "Alireza Abolhasani Zeraatkar"
+date: "03/18/2024"
+output:
+  html_document:
+    df_print: paged
+    number_sections: yes
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.pos = 'H')
+```
+
+
+
+# Abstract
+
+This study delves into the longstanding debate surrounding the impact of class size on educational outcomes, specifically examining its effect on 1st grade students' mathematics grades. Drawing upon the comprehensive STAR dataset, this research employs an analysis of variance (ANOVA) to scrutinize math scores across different classroom settings, including small, regular, and regular with aide configurations. Initial findings suggest a notable correlation between class size and math performance, highlighting the potential advantages of smaller class environments in enhancing student achievement. Moreover, the study addresses critical considerations regarding the economic and logistical feasibility of class-size reduction (CSR) policies. By integrating a nuanced analysis of various educational, demographic, and institutional variables, this investigation contributes to a more informed debate on optimal class sizes, aiming to offer actionable insights for educators, policymakers, and stakeholders in the educational sector.
+
+# Introduction
+
+The intricate relationship between class size and student outcomes has
+long been a subject of interest within the educational landscape,
+provoking extensive debate and research. The seminal Student/Teacher
+Achievement Ratio (STAR) study, conducted in Tennessee during the late
+1980s, stands as a cornerstone in this field of inquiry. This
+longitudinal investigation involved over 7,000 students across 79
+schools, meticulously examining the impact of various class
+configurations---ranging from small classes and regular classes to
+regular classes with a teacher's aide---on student achievement from
+kindergarten through third grade. Utilizing the Stanford Achievement
+Tests as a measure, the study sought to identify statistically
+significant differences in scaled student outcomes, thereby contributing
+to a nuanced understanding of the role class size plays in educational
+efficacy.
+
+This investigation draws inspiration from the conviction, echoed by
+luminaries such as Einstein and Mandela, that education is a paramount
+force capable of transforming society and nurturing individual
+potential. Against this backdrop, our study aims to harness the rich
+dataset provided by Project STAR, exploring critical questions about the
+correlation between class size and math scaled scores in first grade.
+The implications of this exploration extend beyond academic discourse,
+touching on policy-making and resource allocation within the realm of
+education. By delving into whether and how class size variations
+influence student performance, this research aspires to offer
+evidence-based insights that could inform classroom design and teaching
+strategies, ultimately aiming to enhance the quality and efficiency of
+education systems.
+
+Embracing a methodical approach, our analysis will employ analysis of
+variance statistical method to investigate potential disparities in math
+scaled scores of first grade students across different class types and
+determine which class configuration yields the highest academic
+achievement. This endeavor is not only a quest for academic
+enlightenment but also a practical examination aimed at guiding
+educators, policy-makers, and stakeholders in making informed decisions
+about class-size reduction (CSR) initiatives. As CSR represents a
+significant financial and logistical commitment, the findings of this
+study could prove pivotal in determining whether the potential benefits
+of such policies justify the resources invested. Through this
+comprehensive inquiry, we aim to contribute to the ongoing dialogue on
+optimizing educational practices, thereby paving the way for a more
+informed and effective deployment of educational resources [1].
+
+# Background
+
+## Variables Catalog
+
+For the analysis presented in this project, the STAR dataset capturing
+various aspects of 1st-grade students, their teachers, and educational
+settings. To facilitate a structured analysis, we categorized the
+dataset's variables into four primary groups: **Student-Related
+Variables, Classroom Context Variables, School-Related Variables,** and
+**Teacher-Related Variables**. Each category encompasses specific
+variables that collectively offer insights into different dimensions of
+the educational environment and its impact on student outcomes.
+
+### Student-Related Variables
+
+The **Student-Related Variables** include `gender`, `ethnicity`,
+`lunch1`, and `math1`. These variables provide insights into the
+demographic profile of the students and key aspects of their academic
+performance:
+
+-   `gender` and `race` are categorical variables that capture the
+    student's gender, ethnic background/race, respectively, with
+    specific values representing different categories (e.g., Male,
+    Female for `gender`, and White, Black, Hispanic, Other, Asian and
+    Native American racial groups for `race` ).
+-   `g1freelunch` indicates whether the first grade student qualified
+    for free lunch, serving as an indirect measure of socio-economic
+    status.
+-   `g1mathss` is a continuous variable that represents the student's
+    total math scaled score, providing a quantitative measure of
+    academic achievement in mathematics.
+
+### Classroom Context Variables
+
+The **Classroom Context Variables** include `star1` and `classsize1`,
+which reflect the classroom environment and its potential influence on
+learning:
+
+-   `g1classtype` categorizes the classroom type based on the STAR
+    project classifications, including small, regular, and regular with
+    aide, highlighting different instructional settings.
+-   `g1classsize` quantifies the number of students in the classroom,
+    offering a measure of classroom density that can impact student
+    learning and teacher effectiveness.
+
+### School-Related Variables
+
+**School-Related Variables** such as `g1schid` and `g1surban` provide
+contextual information about the educational institution:
+
+-   `g1schid` is a unique identifier for each school, allowing for the
+    analysis of data at the school level.
+-   `g1surban` classifies schools into types such as inner-city,
+    suburban, rural, and urban, offering a perspective on the geographic
+    and socio-economic context of the educational setting.
+
+### Teacher-Related Variables
+
+Finally, the **Teacher-Related Variables** cover `g1tchid`, `g1tgen`,
+`g1trace`, `g1thighdegree`, `g1tcareer`, and `g1tyears`. These variables
+detail the professional and demographic characteristics of the teachers:
+
+-   `teacher_id` provides a unique identifier for each teacher,
+    facilitating analysis of teacher-specific influences on student
+    outcomes.
+-   `g1tgen` and `g1trace` describe the gender and ethnic background of
+    the teachers.
+-   `g1thighdegree` and `g1tcareer` offer insights into the teacher's
+    highest educational attainment and their position on the career
+    ladder, respectively, indicators of professional development.
+-   `g1tyears` measures the total years of teaching experience, a factor
+    often associated with teacher effectiveness.
+
+Through the analysis of these categorized variables, our project aims to
+uncover the multifaceted influences on student academic performance in
+the 1st grade. By examining the interplay between student demographics,
+classroom size and school contexts, we seek to provide a comprehensive
+understanding of the factors contributing to the math score of first
+grade students.
+
+## Project Design
+
+The factors mentioned in the project STAR document are designed to
+ensure the credibility and unbiased nature of the experiment. These
+factors collectively contribute to the robustness and integrity of the
+STAR experiment according to Boozer et al. [2].
+
+-   **Inclusive Participation**: All schools with K-3 classes in
+    Tennessee were invited, reducing bias from selective school
+    participation.
+
+-   **Adequate School Size**: Schools had to be large enough to form all
+    three class types, ensuring resource, leadership, and facility
+    differences were controlled.
+
+-   **Broad Representation**: 79 schools across various locations
+    participated, enhancing the experiment's credibility through a
+    diverse sample size.
+
+-   **Diverse Backgrounds**: Inclusion of schools from different areas
+    minimized bias from students' backgrounds.
+
+-   **Random Assignment**: Students and teachers were randomly assigned
+    to classes, reducing sampling bias.
+
+-   **Ethical Standards**: The experiment adhered to confidentiality and
+    human subjects' research standards.
+
+-   **Equitable Services**: No child received fewer services due to the
+    experiment, maintaining fairness.
+
+-   **Standardized Testing**: Student achievement was measured by
+    carefully monitored standardized tests.
+
+-   **Independent Analysis**: An outside consultant performed the
+    primary statistical analyses, providing an additional safeguard
+    against biased results.
+
+## Criticism of the STAR Project: Insights and Improvements
+
+The STAR project, renowned for its scale and design in exploring the
+impact of class size on student performance, faces several notable
+criticisms according to Gilraine et al. [3] and Archilles et al. [4]
+that could influence the interpretation and application of its findings:
+
+1.  **Assumption of equal variance in different groups of interest
+    (Homoskedasticity)**: The project's methodology, particularly the
+    aggregation of data to class means, implicitly assumes
+    homoskedasticity of student performance across classes. This
+    assumption is problematic, given the inherent variance in class
+    sizes and the socio-economic and educational diversity of the
+    student population. Such an approach overlooks the potential for
+    greater variance in larger classes and in classes with more
+    heterogeneous compositions.
+
+2.  **Masking Diversity and Individual Achievement**: Aggregating data
+    at the class level obscures the diversity within classes and
+    individual student achievements. This reductionist approach fails to
+    capture the nuanced ways in which students might respond to class
+    size variations, thus limiting the depth of insights into the
+    complex dynamics between class size and student performance.
+
+3.  **Inadequate Justification for Aggregation Strategy**: The decision
+    to aggregate data to the class level, primarily justified by the aim
+    to reduce computational complexity, is weak, especially considering
+    the advancements in computational capabilities. This approach also
+    neglects potential analytical strategies that could have offered
+    more granular insights into the effects of class size on individual
+    student outcomes.
+
+4.  **Teaching Quality Consistency**: The variability in teaching
+    quality across classrooms introduces a significant confounding
+    factor in the study. Despite efforts to ensure uniform teaching
+    quality through in-service training, reports suggest these efforts
+    had minimal impact on teaching practices. This inconsistency in
+    teaching quality complicates the interpretation of how class size
+    affects student performance, independent of teacher effectiveness.
+
+## Suggestions for Improvement
+
+To address these criticisms and enhance the validity and applicability
+of its findings, the STAR project might consider several improvements:
+
+1.  **Refine Analytical Approaches**: Adopting more sophisticated
+    statistical models that account for heterogeneity in student
+    performance across different classes could provide a more accurate
+    depiction of the impact of class size. Multilevel modeling, for
+    instance, could accommodate variances at both the student and class
+    levels, offering a deeper understanding of the dynamics at play.
+
+2.  **Increase Focus on Individual Data**: Shifting the focus from class
+    averages to individual student data would allow for a richer
+    analysis of how class size affects students with varying
+    backgrounds, abilities, and educational supports. This approach
+    could also facilitate the examination of how different students
+    uniquely respond to class size variations.
+
+3.  **Reassess Data Aggregation Strategies**: Re-evaluating the
+    rationale behind data aggregation and exploring alternative
+    analytical methods that leverage modern computational resources
+    could uncover more nuanced insights. This might include
+    disaggregated analyses or the use of big data techniques to handle
+    the complexity of individual-level data.
+
+4.  **Enhance Teaching Quality Controls**: Strengthening efforts to
+    ensure and measure consistent teaching quality across classrooms is
+    critical. This could involve more targeted and follow-up training,
+    the use of peer observations and feedback, and the incorporation of
+    teaching quality metrics into the study's analytical framework.
+
+5.  **Incorporate Confounding Variables**: More explicitly accounting
+    for and analyzing confounding variables such as socio-economic
+    status, educational support at home, and cultural attitudes towards
+    education could enrich the study's findings. Including these
+    variables in the analysis could help isolate the specific effects of
+    class size from these influential factors.
+
+By addressing the insighghts provided and implementing the
+aforementioned suggestions, future iterations of the STAR project or
+similar studies could offer more comprehensive insights into the complex
+relationship between class size and student performance, thereby
+informing more effective educational policies and practices.
+
+# Descriptive analysis
+
+The data set is in the `.sav` format and is used from the Harvard
+Dataverse. I read the description to find and download the data set from
+Harvard dataverse. The data set is in the `.sav` format with 379
+variables. However, you can easily identify teacher/class in 1st grade
+using the variable `g1tchid`.
+
+```{r}
+library("foreign")
+
+# Load data
+data <- suppressWarnings(read.spss("STAR_Students.sav", to.data.frame = TRUE))
+
+```
+
+The columns that we would like to keep in the Harvard Dataset are the
+`g1tchid` which distinguish the teachers assigned to each student. The
+other variable to keep is the `g1schid` which distinguish the school
+identifier that the student has been attending during the first grade.
+The other variable to keep is the `g1classtype` which depicts the class
+type that the student was assigned to. According to the STAR user guide
+the variables that are candidate to keep which represents the grade1's
+math score is `g1tmathss` which represents the scaled math score.
+
+## Non Available data
+
+In the following we see the proportion of the unavailable data in the
+main data set.
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+columns_to_keep <- c("g1tchid", "g1schid", "g1classtype", "g1tmathss")
+
+df <- data %>% select(all_of(columns_to_keep))
+# Calculate missing data proportions
+missing_proportion <- df %>%
+  summarise_all(~mean(is.na(.))) %>%
+  pivot_longer(everything(), names_to = "column", values_to = "proportion")
+
+# Plot data without styling
+ggplot(missing_proportion, aes(x = column, y = proportion)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Percentage of Unavailable Data for Each Variable") +
+  coord_cartesian(ylim = c(0.4, 0.45))
+
+
+```
+
+The lack of a `g1tmathss` value indicates that certain students either
+didn't participate in the testing or were not part of the STAR project
+in the first grade. Since these students do not fall within our target
+group, we will exclude these records from our analysis. Similarly, an NA
+in `g1tmathss` signifies that the student did not participate in any
+STAR classes. This group does not align with our research interests
+either, and thus, it's appropriate to drop these observations as well.
+
+## Impact of Teacher, Class Type, and School
+
+```{r}
+library(dplyr)
+columns_to_keep <- c("g1tchid", "g1schid", "g1classtype", "g1tmathss")
+
+
+df_filtered <- df[!is.na(data$g1tmathss), ]
+
+min_math_score <- min(df_filtered$g1tmathss)
+max_math_score <- max(df_filtered$g1tmathss)
+number_of_missing_scores <- nrow(df) - nrow(df_filtered)
+
+print(paste("Range of 1st grade math scores:", min_math_score, "to", max_math_score))
+print(paste("The number of missing scores are:", number_of_missing_scores))
+
+```
+
+There are 11601 total observations in which 6598 observations that
+ranges from 404 to 676 and there are 5003 missing scores.
+
+```{r}
+library(ggplot2)
+
+# Combine columns for teacher class ID. Not in use.
+# Combine columns for class type. Not in use.
+# Combine columns for school ID. Not in use.
+library(ggplot2)
+teacher_summary <- df_filtered %>%
+  group_by(g1tchid, g1classtype, g1schid) %>% # Correct data grouping
+  summarise(
+    Min = min(g1tmathss, na.rm = TRUE),
+    Mean = mean(g1tmathss, na.rm = TRUE),
+    StdDev = sd(g1tmathss, na.rm = TRUE),
+    Q1 = quantile(g1tmathss, 0.25, na.rm = TRUE),
+    Median = median(g1tmathss, na.rm = TRUE),
+    Q3 = quantile(g1tmathss, 0.75, na.rm = TRUE),
+    Max = max(g1tmathss, na.rm = TRUE),
+    Student_Count = n(),
+    .groups = "drop" # Use 'drop' to prevent grouping
+  )
+
+head(teacher_summary)
+
+# Perform additional analysis as needed
+min_math_score <- min(df_filtered$g1tmathss, na.rm = TRUE)
+max_math_score <- max(df_filtered$g1tmathss, na.rm = TRUE)
+number_of_missing_scores <- sum(is.na(df$g1tmathss))
+
+print(paste("Range of 1st grade math scores:", min_math_score, "to", max_math_score))
+print(paste("Number of missing scores:", number_of_missing_scores))
+  
+head(teacher_summary)
+```
+
+Given that there is no variable of class type, the class type would be
+assigned based on the number of total aggregated number of records for
+each teacher within the same school.
+
+```{r}
+ggplot(teacher_summary, aes(x = Student_Count)) + 
+  geom_histogram(binwidth = 1, fill = "dodgerblue", color = "black") + 
+  scale_x_continuous(breaks = seq(0, max(teacher_summary$Student_Count), by = 5)) + 
+  theme_minimal() + 
+  labs(title = "Histogram of Class Sizes by Number of Classes",
+       x = "Class Size (Number of Students)",
+       y = "Number of Classes")
+```
+
+As shown there were 67 teachers that were teaching the first grade
+students, this is totally in line with the number of years that the
+experiment was running on the selected schools of Tennessee state from
+1990 to 1994.
+
+```{r}
+# Employ base R
+number_of_unique_values <- length(unique(df_filtered$g1tmathss))
+
+# Print the number of unique values
+print(number_of_unique_values)
+
+```
+
+I have aggregated the performance of all students' performance across
+their class to obtain the summary stat to go with during the further
+steps of our initial analysis. As of now we have multiple option to
+choose from the summaries measure for each teacher to be used as the
+response variable.
+
+In order to choose a summary measure, we performed a skewness test to
+see whether the data is slightly balanced or has significant skewness.
+From the following result we found the skewness of 0.16 to 0.17 for all
+Mean, Q1, Median, and Q3 summary measures that shows it is very slightly
+right skewed. We considered as the distribution of response variable to
+be symmetric hence we keep with the mean of math scores in grade 1 for
+each class as the choice of statistics.
+
+for the consistencty in scale and visual comparison all the statistics
+are plotted on the same plot
+
+```{r}
+library(moments)
+
+# Set up the plotting area to display four boxplots in a single row
+par(mfrow=c(1, 4))
+
+# Calculate skewness and plot boxplot for Mean
+skewness_value <- skewness(teacher_summary$Mean)
+print(paste("Skewness of Mean as Response Variable:", round(skewness_value, 2)))
+boxplot(teacher_summary$Mean, main=paste("Mean\nSkewness:", round(skewness_value, 2)), ylab="Scores", xlab="Mean")
+
+# Calculate skewness and plot boxplot for Q1
+skewness_value <- skewness(teacher_summary$Q1)
+print(paste("Skewness of Q1 as Response Variable:", round(skewness_value, 2)))
+boxplot(teacher_summary$Q1, main=paste("Q1\nSkewness:", round(skewness_value, 2)), ylab="Scores", xlab="Q1")
+
+# Calculate skewness and plot boxplot for Median
+skewness_value <- skewness(teacher_summary$Median)
+print(paste("Skewness of Median as Response Variable:", round(skewness_value, 2)))
+boxplot(teacher_summary$Median, main=paste("Median\nSkewness:", round(skewness_value, 2)), ylab="Scores", xlab="Median")
+
+# Calculate skewness and plot boxplot for Q3
+skewness_value <- skewness(teacher_summary$Q3)
+print(paste("Skewness of Q3 as Response Variable:", round(skewness_value, 2)))
+boxplot(teacher_summary$Q3, main=paste("Q3\nSkewness:", round(skewness_value, 2)), ylab="Scores", xlab="Q3")
+
+```
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+
+# Assuming 'teacher_summary' has been previously defined and contains the columns 'Mean', 'Q1', 'Median', 'Q3'
+# Ungroup data (if previously grouped) and select only the summary statistics
+long_data <- teacher_summary %>%
+  ungroup() %>%
+  select(Mean, Q1, Median, Q3) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "Statistic",
+    values_to = "Value"
+  )
+
+# Now plot
+ggplot(long_data, aes(x = Statistic, y = Value)) +
+  geom_boxplot() +
+  xlab("Statistic") +
+  ylab("Value") +
+  ggtitle("Distribution of Summary Statistics")
+
+```
+
+Here is the box plot!
+
+```{r}
+
+
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+
+# Ensure 'teacher_summary' includes a 'class_type' column for this to work
+long_data <- teacher_summary %>%
+  pivot_longer(
+    cols = c(Mean, Q1, Median, Q3), # Specify the summary statistics columns
+    names_to = "Statistic",
+    values_to = "Value",
+    # Retain the 'class_type' in the reshaped data
+    values_drop_na = TRUE
+  ) %>%
+  # This assumes you want to keep 'class_type' and it's in the data
+  select(g1classtype, Statistic, Value)
+
+# Plotting with 'class_type' as a distinguishing feature
+ggplot(long_data, aes(x = Statistic, y = Value, fill = g1classtype)) +
+  geom_boxplot() +
+  xlab("Statistic") +
+  ylab("Value") +
+  ggtitle("Distribution of Summary Statistics by Class Type") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set3") +
+  facet_wrap(~g1classtype) +
+  theme(legend.position = "none",
+  axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r}
+# Detect outliers using IQR method
+Q1 <- quantile(teacher_summary$Mean, 0.25)
+Q3 <- quantile(teacher_summary$Mean, 0.75)
+IQR <- Q3 - Q1
+lower_bound <- Q1 - 1.5 * IQR
+upper_bound <- Q3 + 1.5 * IQR
+
+# Identify potential outlier
+outliers <- teacher_summary[teacher_summary$Mean < lower_bound | teacher_summary$Mean > upper_bound, ]
+print("Potential outliers:")
+print(outliers)
+
+```
+
+## Multivariate descriptive statistics for the outcome
+
+```{r}
+# Load necessary library
+library(readr)
+
+# Select relevant variables for descriptive statistics
+selected_vars <- teacher_summary[, c("Min", "Mean", "StdDev", "Q1", "Median", "Q3", "Max", "Student_Count")]
+
+# Display the structure and a summary of the selected variables
+str(selected_vars)
+
+summary(selected_vars)
+
+```
+
+## **A summary statistics of classes based on their type**
+
+```{r}
+summary(selected_vars)
+
+```
+
+The following figure shows the boxplot of response variable spread
+across Y axis for each class type shown on the X axis.
+
+```{r}
+library(ggplot2)
+
+ggplot(teacher_summary, aes(x = g1classtype, y = Mean, fill = g1classtype)) + 
+geom_boxplot() +
+labs(title = "Boxplot of Mean of Math Scores in 1st grade v.s. Class Type",
+   x = "Class Type",
+   y = "Mean Scores of Math in 1st grade") +
+theme_minimal() +
+scale_fill_brewer(palette = "Set1") 
+```
+
+## **A summary statistics of schools based on their identifier**
+
+The Outcome v.s. school IDs is plotted based on the reported selected
+summary statistics
+
+```{r}
+# Calculate the summary statistics for each school
+school_summary <- df_filtered %>%
+  group_by(g1schid) %>%
+  summarise(
+    Min = min(g1tmathss),
+    Mean = mean(g1tmathss),
+    StdDev = sd(g1tmathss),
+    Q1 = quantile(g1tmathss, 0.25),
+    Median = median(g1tmathss),
+    Q3 = quantile(g1tmathss, 0.75),
+    Max = max(g1tmathss),
+    Student_Count = n()
+  )
+  
+head(school_summary)
+```
+
+```{r}
+print(summary(school_summary$Mean))
+
+```
+
+as we see the median of selected outcome (math1's score mean value) for
+the school summary is extremely close to the mean. (Median=530.6 , Mean
+= 530.4) While the Q1 and Q3 show the middle half of the outcome is
+spread among [518.0, 543.0] this justifies the selection of mean
+statistics since the distribution of data is almost non-skewed and
+symmetric and the number of outlier are 0.
+
+```{r}
+# Detect outliers using IQR method
+Q1 <- quantile(school_summary$Mean, 0.25)
+Q3 <- quantile(school_summary$Mean, 0.75)
+IQR <- Q3 - Q1
+lower_bound <- Q1 - 1.5 * IQR
+upper_bound <- Q3 + 1.5 * IQR
+
+# Identify potential outliers among school_Id s
+outliers <- school_summary[school_summary$Mean < lower_bound | school_summary$Mean > upper_bound, ]
+print(paste("There is", nrow(outliers), "outliars"))
+
+
+```
+
+## **Main effect plot of response variable to factors**
+
+In the following we aim to plot the main effect vs the class type and
+the main effect vs the school id effect plot.
+
+```{r}
+library(gplots)
+teacher_summary$g1classtype <- as.factor(teacher_summary$g1classtype)
+teacher_summary$g1schid <- as.factor(teacher_summary$g1schid)
+
+options(repr.plot.width=12, repr.plot.height=12)
+#par(mfrow=c(3, 1))
+# Main effect plot for class type
+plotmeans(Mean ~ g1classtype, data=teacher_summary, xlab="Class Type", ylab="Mean",
+          main="Main Effect, Class Type", cex.lab=1.5)
+```
+
+```{r}
+
+library(ggplot2)
+
+# Basic plot with proper X and Y axis titles
+g2 <- ggplot(teacher_summary, aes(x = as.factor(g1schid), y = Mean)) + 
+  geom_point() +
+  xlab("School ID") +
+  ylab("Mean Score")
+
+# Display the plot
+g2
+
+
+```
+
+```{r}
+# Assuming class_type and schoolid are suitable for an interaction plot
+#interaction.plot(filtered_teacher_summary$class_type, filtered_teacher_summary$schoolid, filtered_teacher_summary$Mean,
+#                 cex.lab=1.5, ylab="Mean", xlab='Class Type', leg.bty="o", xpd=TRUE, legend.pos="topright")
+#par(mfrow=c(1, 1))
+```
+
+
+
+# Inferential analysis
+
+We define a two-way ANOVA model as follows
+$Y_{ijk} = \mu_{..} + \alpha_{i} + \beta_{j} + \epsilon_{ijk}$, where
+the index $i$ represents the class type: small ($i=1$), regular ($i=2$),
+regular with aide ($i=3$), and the index $j$ represents the school
+indicator. The error terms ${\epsilon_{ij}}$ are I.I.D and follow
+$N(0,\sigma^2)$ with equal variance and in dependency of each error term
+and the normal distribution.
+
+The $\mu_{..}$ is the overall mean which represents the grand mean among
+all the observations. The $\alpha_i$ is the effect of the class type
+(where i=1 is small, i=2 is regular and i=3 is regular with aide) on the
+$Y_{ijk}$ or outcome. In other word, it tells us how the class size
+affects the outcome, relative to the $\mu_{..}$ . The $\beta_j$ is the
+effect of the j(st,nd,th) school onto the $Y_{ijk}$. in other word, it
+tells us the variation in $Y_{ijk}$ which is different among the
+schools. The $\epsilon_{ijk}$ is the error term of every single
+observation that we have, it represents the random deviation of each
+observation from the two-way ANOVA model which couldn't be explained by
+either one of the class types or school. The assumption is the error
+term $\epsilon_{ijk}$ is i.i.d and is distributed with
+$N(\mu=0,\sigma^2)$ where the variance is constant.
+
+## **The factor effect definition**
+
+$\mu_{..} = \sum_{i=1}^{3}\sum_{j=1}^{76}\mu_{ij}/(3*76), \mu_{i.} = \sum_{j=1}^{76}\mu_{ij}/76, \mu_{.j}=\sum_{i=1}^{3}\mu_{ij}/3$
+and $\alpha_{i} = \mu_{i.}-\mu_{..}, \beta{j} = \mu_{.j} - \mu_{..}$
+
+The constraints on the defined two-way ANOVA model are on the parameters
+of $\alpha_i$ and $\beta_j$ where we have the following two constraints.
+
+## **Assumptions on the proposed model**
+
+First: $\sum_{i=1}^{3}\alpha_i = 0$ and Second:
+$\sum_{i=1}^{76}\beta_j = 0$ since that there are three types of classes
+and 76 different school indicators which shows the average effect of
+class type and the average effect of the schools should cancel out
+themselves in other words, any effect should be measured while compared
+against the $\mu_{..}$ .
+
+To justify the choice of Two-Way ANOVA model, we are assuming that the
+outcome is variable of both additive effect of the class type and the
+school, please note that this the initial assumption and during the
+course of the project it's probable to find the assumption doesn't hold.
+It's important to note that prior to the experiment setup, only the
+eligible schools could participate in the experiment, those who willed
+to assign students randomly to the different type of classes and those
+who could provide at least one of each class type.
+
+In this model we dropped all interaction terms for the benefit of model
+effectiveness and less number of parameters with unknown values.
+However, we do not reject the possibility of existence of interaction
+terms between the school identifier and class type in the reality. In
+this case it is rational that there shouldn't be any effect of the class
+type at each school on the outcome is independent of each school. To
+rephrase, we are expecting the affect of the class type is consistent
+among all schools so in this case no interaction term is required.
+However, we use two-way ANOVA model since we want to explain the outcome
+by the additive effect of both class type and school.
+
+Since the interaction terms are dropped, to reduce the number of unknown
+parameters, we need to state additional assumptions which could be
+rejected in the real scenarios. We assume that all the $\epsilon_{ijk}$
+are identically distributed and independent and follow Normal
+distribution, they all have equal variance of a constant value.
+
+Given that the data for each observation is aggregated based on
+different number of students in each class and is imbalanced and the
+fact that we are not interested in the interaction terms as mentioned
+above, let's go with type II since it's much more appropriate with the
+unbalanced data that two-way ANOVA model.
+
+In the below table, the p values of each class type and school
+identifier is `2e-16` and `2.57e-9` respectively. This `p value` shows
+that there is a significant difference in the students average math
+score in grade 1 across the class type and school identifier. The fitted
+coefficient of factor for class type regular with aide is `1.6957524`
+and the one one of factor for small class type is `13.2145699`
+accordingly.
+
+```{r}
+suppressWarnings(library(car))
+
+teacher_summary$g1classtype <- gsub("\\+", "and", teacher_summary$g1classtype)
+# The plus sign will introduce computational bugs in the ANOVA, hence replaced!
+
+lm_model <- lm(Mean ~ factor(g1schid) + factor(g1classtype), data = teacher_summary)
+anova_result <- Anova(lm_model, type = 2)
+
+anova_result
+```
+
+```{r}
+lm_model$coefficients[c(2,3)]
+```
+
+## **Hypothesis statement and testing**
+
+In order to check whether any association between the class type and the
+mean of the first grade students' math score exists, we will be testing
+the difference of the response variable across all three class types and
+school identifiers separately:
+
+### **Hypothesis Factor A: for association response variable to class type**
+
+If the response variable is same for each class type then the null
+hypothesis $H_{0C}$ is true, otherwise if there is an inequality of
+response variable across any class types, then the null hypothesis
+$H_{0C}$ is rejected and the alternative hypothesis $H_{1C}$ is true.
+The null hypothesis is : $H_{0C}: \alpha_i = 0$ for all $i$ s in the
+class types while the alternative hypothesis is: an $i$ exists in the
+class types such that $H_{1C}: \alpha_i \ne 0$
+
+We use F-test with the significance level $1-\alpha$ set to 0.95 for
+testing hypothesis. We will reject the null hypothesis at the given
+significance level if the
+$F^* > F(1-\alpha, r_{types}-1, n_T-r_{types})$ Where $r_{types}$
+denotes all possible types of classes and $n_T$ denotes number of
+observations
+
+### **Hypothesis Factor B: for association response variable to school id**
+
+If the response variable is same for each school id then the null
+hypothesis $H_{0S}$ is true, otherwise if there is an inequality of
+response variable across any school ids, then the null hypothesis
+$H_{0S}$ is rejected and the alternative hypothesis $H_{1S}$ is true.
+The null hypothesis is : $H_{0S}: \beta_j = 0$ for all $j$ s in the
+school ids while the alternative hypothesis is: an $j$ exists in the
+school ids such that $H_{1S}: \beta_j \ne 0$
+
+We use F-test with the significance level $1-\alpha$ set to 0.95 for
+testing hypothesis. We will reject the null hypothesis at the given
+significance level if the
+$F^* > F(1-\alpha, r_{types}-1, n_T-r_{types})$ Where $r_{types}$
+denotes all possible ids of schools and $n_T$ denotes number of
+observations
+
+## **Evaluating the** Hypothesizes
+
+We set the significance level $1-\alpha$ to 0.95 for testing hypothesis.
+We will reject the null hypothesis at the given significance level for
+both $H_{0C}$ and $H_{0S}$ if the
+$F^* > F(1-\beta, r_{types/ids}-1, n_T-r_{types/ids})$
+
+```{r}
+# Assuming filtered_teacher_summary is your data frame with class_type, schoolid, and Mean
+alpha = 0.05
+# Fit models
+model_full <- lm(Mean ~  g1schid + g1classtype   , data = teacher_summary) # Full model without interaction
+model_class_type <- lm(Mean ~ g1classtype, data = teacher_summary) # Only class type
+model_schoolid <- lm(Mean ~ g1schid, data = teacher_summary) # Only school id
+model_null <- lm(Mean ~ 1, data = teacher_summary) # Null model
+
+# Calculate Residual Sum of Squares (RSS)
+RSS_full <- sum(resid(model_full)^2)
+RSS_class_type <- sum(resid(model_class_type)^2)
+RSS_schoolid <- sum(resid(model_schoolid)^2)
+RSS_null <- sum(resid(model_null)^2)
+
+# Type II SS for main effects
+SS_class_type_Type_II <- RSS_null - RSS_class_type - (RSS_full - RSS_schoolid)
+SS_schholid_Type_II <- RSS_null - RSS_schoolid - (RSS_full - RSS_class_type)
+
+# Corrected Mean Squares
+MS_classtype <- SS_class_type_Type_II / anova(model_full)$Df[2] # class type degrees of freedom from full model
+MS_schoolid <- SS_schholid_Type_II / anova(model_full)$Df[3] # school id degrees of freedom from full model
+MS_error <- RSS_full / model_full$df.residual
+
+# F values
+F_classtype <- MS_classtype / MS_error
+F_schoolid <- MS_schoolid / MS_error
+
+# Print results
+print("*******************")
+#cat("Type II SS for Factor class type:", SS_class_type_Type_II, "\n")
+#cat("Type II SS for Factor school id:", SS_schholid_Type_II, "\n")
+
+
+# Repeat the process for Factor B with its respective degrees of freedom and calculated F-value
+critical_factor_class_type <- qf(1 - alpha, anova(model_full)$Df[2], model_full$df.residual)
+
+cat("F-value for Factor class type:", F_classtype, "\n")
+cat("F dist. value for class types", critical_factor_class_type, "\n")
+# Decision for Factor class type
+if(F_classtype > critical_factor_class_type) {
+  cat("Reject the null hypothesis for factor class type: It has a significant effect.\n")
+} else {
+  cat("Do not reject the null hypothesis for factor class type: It does not have a significant effect.\n")
+}
+print("*******************")
+# Repeat the process for factor school id with its respective degrees of freedom and calculated F-value
+critical_factor_schoolid <- qf(1 - alpha, anova(model_full)$Df[3], model_full$df.residual)
+
+cat("F-value for Factor school id:", F_schoolid, "\n")
+cat("F dist. value for school ids", critical_factor_schoolid, "\n")
+# Decision for Factor school id
+if(F_schoolid > critical_factor_schoolid) {
+  cat("Reject the null hypothesis for factor school id: It has a significant effect.\n")
+} else {
+  cat("Do not reject the null hypothesis for factor school id: It does not have a significant effect.\n")
+}
+print("*******************")
+
+```
+
+## **Class Type Matters!**
+
+As we have seen above both null hypothesis for class types and school
+ids ($H_{0C}$ and $H_{0S}$) are rejected, hence concluding that there is
+a significance association with response variable to each class type and
+school ids at the significance level of $\alpha = 0.05$. Although the
+null hypothesis is rejected for both class types and school identifiers,
+we observe there is a stronger difference to reject the hypothesis of
+class type rather than school id. We found the significant effect of
+class type to the mean of math score for the first grade students.
+
+Based on the positive answer to the first question we will answer the
+second question of interest to find the associated type of class with
+the highest average of math scores for first grade students.
+
+## **Who Ace the Math?**
+
+To answer which class type is associated with the highest math scaled
+scores in 1st grade, we employed the Tukey's range test as follow:
+According to the Tukey's HSD test, the small - regular and small -
+regular with aid has the least difference in the adjacent p values,
+which means the type of class of small has the highest impact on the
+response variable. We used the Tukey-Kramer algorithm to compare each
+class types mean. The confidence interval for difference of means is set
+to $1-\alpha = 0.95$ where
+$HSD = q_{\alpha}(k, N-k) \sqrt{\frac{MSE}{2} \left( \frac{1}{n_i} + \frac{1}{n_j} \right)}$
+and $HSD$ is the Honestly Significant Difference and the
+$q_{\alpha}(k, N-k)$ is the critical value from the Tukey distribution
+for $\alpha$ significance level, $k$ groups, and $N-k$ degrees of
+freedom for the error term. The $MSE$ is the Mean Square Error from the
+ANOVA and the $n_i$ and the $n_j$ are the sample sizes of the $i^{th}$
+and $j^{th}$ groups, respectively. $N$ is the total number of
+observations across all groups and $k$ is the total number of groups.
+
+```{r}
+tukey_results <- TukeyHSD(aov(lm_model))
+
+tukey_results_classtype <- TukeyHSD(aov(Mean ~ g1classtype + g1schid, data=teacher_summary), which = "g1classtype")
+
+print(tukey_results_classtype)
+```
+
+Below, we see the the differences in mean levels of class-wise on a 95%
+confidence level.
+
+```{r}
+plot(print(tukey_results_classtype))
+```
+
+# Sensitivity analysis
+
+## **Testing for assumptions of error terms, potential outliers**
+
+1.  Based on the Residulals vs Fitted plot, we observe that the error
+    terms are independent distributed with no sign of non-linearity.
+2.  Based on the Normal Q-Q plot, we observe that the error terms are
+    roughly distributed with $N(0,\sigma^2)$ with a heavy tail on both
+    ends.
+3.  Based on the Residual vs Fitted plot, there are no outliers samples
+    that deviates significantly in the data.
+4.  Based on the Final plot, the leverage point identified matches the
+    deviating value identified in the residual plot. So there is only
+    one significant outlier.
+
+```{r}
+# Fitted model
+lm_model <- lm(Mean ~ factor(g1schid) + factor(g1classtype), data = teacher_summary)
+
+# 1. Residuals vs Fitted
+# 2. Normal Q-Q
+# 3. Scale-Location (also known as Spread-Location or sqrt(|Residuals|) vs Fitted)
+# 4. Residuals vs Leverage that helps us to find influential cases if any
+
+plot(lm_model) # Diagnostic plots
+```
+
+```{r}
+plot(lm_model, which = 4) # Cook's distance plot
+abline(h = 0.5, col = "red", lty=2) # Adding a reference line at 0.5 for Cook's distance (threshold can vary)
+```
+
+## **Testing for equal variance assumption**
+
+To evaluate the homogeneity of variances, we perform the [Levene
+test](https://en.wikipedia.org/wiki/Levene%27s_test) in the initial
+analysis and the Brown-Forsythe test in the final report.
+
+We assumed that the variance of error terms are equal, and we could
+prove that by checking the residual plot above. However to test that
+variance across each group is equal we test that using the null
+hypothesis of Levene test.
+
+### **Equal variance across class types**
+
+The null hypothesis is $H_0: \sigma^2_1 = \sigma^2_2 = \sigma^2_3$ while
+the alternative hypothesis for the Levene test says
+$H_1 : \sigma_i^2 \ne \sigma_j^2$ for two different class types of $i$
+and $j$. We use the F stat by fitting a simple anova model on each class
+type. We aim to find the $Z_{ij} = Y_{ij} - \bar{Y_{i.}}$ as the
+$Y_{i.}$ is the class type's group median. We will fit the $Z_{ij}$
+values as the response while the class type will be as the factor. If
+the $F^* > F(1-\alpha, r-1,n_T -1)$ then the null hypothesis $H_0$ will
+be rejected. Please note $r$ here stands for the number of class types.
+
+```{r}
+cat("Performing Levene test for class types")
+leveneTest(Mean~factor(g1classtype),data=teacher_summary)
+```
+
+As we see the `p-value` for class type categorical group suggest the
+existence of homogeneity variance across the class type groups under the
+significance level $1-\alpha = 0.95$ Hence the variance assumption holds
+true.
+
+### **Equal variance across school identifiers**
+
+The null hypothesis is
+$H_0: \sigma^2_1 = \sigma^2_2 = \cdots = \sigma^2_{76}$ while the
+alternative hypothesis for the Levene test says
+$H_1 : \sigma_i^2 \ne \sigma_j^2$ for two different school identifiers
+of $i$ and $j$. We use the F stat by fitting a simple anova model on
+each school identifier. We aim to find the
+$Z_{ij} = Y_{ij} - \bar{Y_{.j}}$ as the $Y_{.j}$ is the school
+identifiers' group median. We will fit the $Z_{ij}$ values as the
+response while the school identifier will be as the factor. If the
+$F^* > F(1-\alpha, r-1,n_T -1)$ then the null hypothesis $H_0$ will be
+rejected. Please note $r$ here stands for the number of school
+identifiers.
+
+```{r}
+cat("Performing LEvene test for school ids")
+leveneTest(Mean~factor(g1schid),data=teacher_summary)
+
+```
+
+As we see the `p-value` for school identifier categorical group suggest
+the existence of homogeneity variance across the school identifier
+groups under the significance level $1-\alpha = 0.95$ Hence the variance
+assumption holds true.
+
+## **Testing for no interaction terms assumption**
+
+We test for interactions to see if there is any change to the
+assumptions that needs to be made. The null hypothesis is
+$H_0 : \alpha_i\beta_j = 0$ for all $i$ and $j$ in class type and
+schoolid. While for the alternative hypothesis we need to say there
+exist an $i$ and $j$ such that $H_1: \alpha_i\beta_j \ne 0$. To test the
+hypothesis we use the following table.
+
+The p-value is `0.7408`, which is much higher than the conventional
+threshold of `0.05` used to determine statistical significance.
+
+This means that the null hypothesis that stated that the interaction
+terms do not significantly improve the model's fit to the data, cannot
+be rejected. Hence adding interaction terms between factor class type
+and school id to the model does not provide a statistically significant
+improvement in explaining the variability of Mean.
+
+```{r}
+# Test for interactions 
+full_model=lm(Mean~as.factor(g1classtype)*as.factor(g1schid),data=teacher_summary);
+reduced_model=lm(Mean~as.factor(g1classtype)+as.factor(g1schid),data=teacher_summary);
+anova(reduced_model,full_model)
+```
+
+```{r}
+# Fit the chosen model:
+library(stats)
+sig.level=0.05;
+anova.fit<-aov(rank(Mean)~g1classtype+g1schid,data=teacher_summary)
+summary(anova.fit)
+```
+
+# Discussion
+
+## Project Recap
+
+The discussion around the impact of classroom size and school urbanicity
+on student test scores, as evidenced by the analyses presented, draws
+attention to the nuanced understanding required when interpreting
+educational data and considering educational policies. The findings
+across various analyses reveal a statistically significant effect of
+both class type and school on the median first-grade math test scores,
+with smaller class sizes associated with higher test scores. This
+reinforces the intuitive notion that a more personalized learning
+environment, afforded by smaller class sizes, potentially enhances
+student learning outcomes. The ANOVA methodology employed highlight a
+robust attempt to account for various confounding variables and to
+ensure the validity of the findings.
+
+## Findings in the inferential analysis
+
+An important takeaway from these investigations is the acknowledgment of
+the limitations and challenges faced, which underscores the complexity
+of educational research. The variability in class sizes, the urbanicity
+of schools, and the heterogeneity of student populations require careful
+consideration in the analysis and interpretation of data. For instance,
+the potential underrepresentation of urban settings or the economic
+implications of implementing smaller class sizes present practical
+challenges that need to be balanced against the educational benefits
+observed.
+
+## Suggestions for future research
+
+Future research directions suggested by these analyses include a deeper
+exploration of the optimal class size, the impact of additional teacher
+aides, and the broader examination of educational outcomes beyond
+first-grade math scores. The suggestion to investigate the presence of
+additional teacher aides as a means to improve student-teacher ratios
+and potentially enhance test scores offers a promising avenue for
+further study. Moreover, extending the scope to include other factors
+such as household income or parental education levels could provide a
+more comprehensive understanding of the influences on student
+performance.
+
+## Caveats of the current analysis
+
+we consolidate and discuss these caveats to offer a comprehensive
+understanding of the nuances involved in our analysis.
+
+### Noncompliance and Selection Bias
+
+Our analysis encountered potential noncompliance, where the random
+assignment of students to class types might not have been strictly
+adhered to. This introduces a selection bias, particularly if students
+who switched to smaller classes were inherently different in their
+potential to score on tests. This bias could lead to an underestimation
+of the positive impact of small class sizes on student performance.
+Future studies should seek to understand the reasons behind such
+switches to better account for this bias.
+
+### Limitations Due to Lack of Ideal Covariates
+
+The absence of certain covariates, such as socioeconomic status and
+parental education levels, compelled us to use race as a proxy,
+potentially limiting the precision of our model. While this approach was
+pragmatic, it highlights the need for richer datasets that include a
+broader range of covariates to more accurately isolate the effects of
+class size and other factors on student outcomes.
+
+### Potential Violation of Stable Unit Treatment Value Assumption (SUTVA)
+
+Our model's assumption that each student's outcome is independent of the
+treatment assignments of their peers may be violated due to peer
+effects, especially in the context of classroom settings. This violation
+suggests a need for caution in interpreting our results and possibly for
+developing models that can account for such interdependencies.
+
+### Extreme Distributions and ANOVA Assumptions
+
+Some variables in our dataset exhibited extreme distributions,
+challenging several assumptions underlying our ANOVA models. This
+limitation hindered further exploration of potential influences, such as
+the effect of teacher experience or the broader impact of ethnicity on
+test scores, underscoring the importance of employing flexible models
+that can accommodate real-world data complexities.
+
+### Economic and Practical Considerations
+
+The economic implications of reducing class sizes, given the significant
+costs associated with such interventions, present a critical caveat. Our
+analysis suggests benefits to smaller class sizes but also calls for a
+consideration of alternative, cost-effective strategies for enhancing
+educational outcomes.
+
+### Scope of Investigation and Future Directions
+
+Finally, our investigation's narrow focus on first-grade math scores,
+without considering kindergarten performance or other academic subjects,
+limits the breadth of our conclusions. Future research should aim to
+provide a more holistic understanding of the educational impacts of
+classroom size and composition, potentially including a wider array of
+grade levels and subject areas.
+
+In sum, while our analysis offers valuable insights into the effects of
+classroom size and urbanicity on student performance, these caveats
+highlight the complexity of educational research and the need for
+ongoing investigation. Addressing these limitations in future studies
+will be crucial for developing more effective and equitable educational
+policies and practices.
+
+## Concluding remarks
+
+In conclusion, the collective findings from these analyses contribute
+valuable insights into the effect of classroom size and school
+urbanicity on student test scores, emphasizing the importance of
+personalized learning environments. However, the nuanced discussion of
+the limitations and challenges faced in these studies, along with the
+suggestions for future research, highlights the ongoing need for
+thoughtful, evidence-based approaches to educational policy and
+practice. The exploration of cost-effective and scalable interventions
+that address the diverse needs of student populations remains a crucial
+area for further investigation.
+
+# Acknowledgement {.unnumbered}
+
+In the course of this project, I have utilized the Bing AI tool
+extensively for refining my text, ensuring grammatical accuracy, and
+proper punctuation. This invaluable resource has significantly expedited
+my writing process. Additionally, I turned to Stack Overflow for
+assistance with coding, given my limited proficiency in R programming.
+
+# Reference {.unnumbered}
+
+[1] Mosteller, F. (1995). The Tennessee study of class size in the early
+school grades. *The future of children*, 113-127.
+
+[2] Boozer, M., & Cacciola, S. E. (2001). Inside the'Black Box'of
+Project STAR: Estimation of peer effects using experimental
+data. *Available at SSRN 277009*.
+
+[3] Gilraine, M. (2020). A method for disentangling multiple treatments
+from a regression discontinuity design. *Journal of Labor
+Economics*, *38*(4), 1267-1311.
+
+[4] Achilles, C. M. (2012). Class-Size Policy: The STAR Experiment and
+Related Class-Size Studies. NCPEA Policy Brief. Volume 1, Number
+2. *NCPEA Publications*.
+
+# Session info {.unnumbered}
+
+```{r}
+sessionInfo()
+```
